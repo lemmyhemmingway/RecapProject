@@ -1,4 +1,6 @@
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.DTOs;
 using Entities.Concrete;
@@ -14,42 +16,42 @@ public class CarManager : ICarService
         _carDal = carDal;
     }
 
-    public List<Car> GetAll()
+    public IDataResult<List<Car>> GetAll()
     {
-        return _carDal.GetAll();
+        return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
     }
 
-    public void Add(Car car)
+    public IResult Add(Car car)
     {
-        if (car.Name.Length > 2 && car.Price > 0)
-            _carDal.Add(car);
-        else
-            Console.WriteLine(
-                "Validation Failed: Car length must be longer than 2 characters and Price must be bigger than 0");
+        if (car.Name.Length < 2 || car.Price < 0)
+            return new ErrorResult(Messages.CarInvalid);
+        return new SuccessResult(Messages.CarAdded);
     }
 
-    public void Update(Car car)
+    public IResult Update(Car car)
     {
         _carDal.Update(car);
+        return new SuccessResult(Messages.CarUpdated);
     }
 
-    public void Delete(Car car)
+    public IResult Delete(Car car)
     {
         _carDal.Delete(car);
+        return new SuccessResult(Messages.CarDeleted);
     }
 
-    public List<Car> GetByColorId(int id)
+    public IDataResult<List<Car>> GetByColorId(int id)
     {
-        return _carDal.GetAll(c => c.ColorId == id);
+        return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
     }
 
-    public List<Car> GetByBrandId(int id)
+    public IDataResult<List<Car>> GetByBrandId(int id)
     {
-        return _carDal.GetAll(c => c.BrandId == id);
+        return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
     }
 
-    public List<CarDetailDto> CarDetails()
+    public IDataResult<List<CarDetailDto>> CarDetails()
     {
-        return _carDal.GetCarDetails();
+        return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
     }
 }
