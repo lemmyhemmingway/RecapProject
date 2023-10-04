@@ -7,11 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11"/>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Autofac.Extras.DynamicProxy" Version="7.1.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Utilities"/>
+      <Reference Include="FluentValidation">
+        <HintPath>..\..\..\.nuget\packages\fluentvalidation\11.7.1\lib\net6.0\FluentValidation.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

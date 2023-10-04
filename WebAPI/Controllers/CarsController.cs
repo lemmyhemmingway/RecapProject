@@ -1,5 +1,6 @@
 using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 using Entities.Concrete;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +31,7 @@ public class CarsController : Controller
     [HttpPost]
     public IActionResult Post(Car car)
     {
-        var cv = new CarValidator();
-        cv.ValidateAndThrow(car);
+        ValidationTool.Validate(new CarValidator(),  car);
         var result = _carService.Add(car);
         if (result.Success) return Ok(result.Message);
 
