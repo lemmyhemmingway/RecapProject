@@ -1,5 +1,7 @@
 using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
 using Entities.Concrete;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -28,6 +30,8 @@ public class CarsController : Controller
     [HttpPost]
     public IActionResult Post(Car car)
     {
+        var cv = new CarValidator();
+        cv.ValidateAndThrow(car);
         var result = _carService.Add(car);
         if (result.Success) return Ok(result.Message);
 

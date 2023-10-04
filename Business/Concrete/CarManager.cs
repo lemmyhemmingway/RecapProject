@@ -23,8 +23,6 @@ public class CarManager : ICarService
 
     public IResult Add(Car car)
     {
-        if (car.Name.Length < 2 || car.Price < 0)
-            return new ErrorResult(Messages.CarInvalid);
         _carDal.Add(car);
         return new SuccessResult(Messages.CarAdded);
     }
