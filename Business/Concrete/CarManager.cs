@@ -12,10 +12,12 @@ namespace Business.Concrete;
 public class CarManager : ICarService
 {
     private readonly ICarDal _carDal;
+    private readonly ICarImageService _carImageService;
 
-    public CarManager(ICarDal carDal)
+    public CarManager(ICarDal carDal, ICarImageService carImageService)
     {
         _carDal = carDal;
+        _carImageService = carImageService;
     }
 
     public IDataResult<List<Car>> GetAll()
@@ -55,5 +57,17 @@ public class CarManager : ICarService
     public IDataResult<List<CarDetailDto>> CarDetails()
     {
         return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
+    }
+
+    private IResult CheckCarImageLimit(int id)
+    {
+        var result = _carImageService.GetByCarId(id);
+        if (result.Data.Count > 5)
+        {
+            return new ErrorResult(); 
+        }
+
+        return new SuccessResult();
+
     }
 }
